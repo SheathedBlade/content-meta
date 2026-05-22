@@ -92,12 +92,23 @@
     "dependencies": [],
     "defaultOrder": 50,
     "defaultEnabled": true,
-    "defaultOptions": {},
+    "defaultOptions": {
+      "showReadingTime": true,
+      "showComma": true
+    },
     "components": {
       "ContentMeta": {
         "displayName": "Content Meta",
         "defaultPosition": "beforeBody",
         "defaultPriority": 20
+      }
+    },
+    "optionSchema": {
+      "showReadingTime": {
+        "type": "boolean"
+      },
+      "showComma": {
+        "type": "boolean"
       }
     }
   }
