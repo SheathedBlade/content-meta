@@ -1,14 +1,9 @@
-import type {
-  QuartzComponentConstructor,
-  QuartzComponentProps,
-  QuartzPluginData,
-  ValidDateType,
-} from "@quartz-community/types";
-import readingTime from "reading-time";
-import { classNames } from "../util/lang";
-import { i18n } from "../i18n";
-import { DateComponent, getDate } from "../util/date";
+import type { QuartzComponentConstructor, QuartzComponentProps } from "@quartz-community/types";
 import type { JSX } from "preact";
+import readingTime from "reading-time";
+import { i18n } from "../i18n";
+import { DateComponent } from "../util/date";
+import { classNames } from "../util/lang";
 import style from "./styles/contentMeta.scss";
 
 export interface ContentMetaOptions {
@@ -36,18 +31,35 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
       if (fileData.dates) {
         const locale = cfg.locale || "en-US";
-        const defaultDateType =
-          (fileData.defaultDateType as ValidDateType | undefined) ??
-          (cfg.defaultDateType as ValidDateType | undefined);
-        if (defaultDateType) {
-          const dataWithDefaultDateType: QuartzPluginData = {
-            ...(fileData as QuartzPluginData),
-            defaultDateType,
-          };
-          const date = getDate(dataWithDefaultDateType);
-          if (date) {
-            segments.push(<DateComponent date={date} locale={locale} />);
-          }
+        // const defaultDateType =
+        //   (fileData.defaultDateType as ValidDateType | undefined) ??
+        //   (cfg.defaultDateType as ValidDateType | undefined);
+        // if (defaultDateType) {
+        //   const dataWithDefaultDateType: QuartzPluginData = {
+        //     ...(fileData as QuartzPluginData),
+        //     defaultDateType,
+        //   };
+        //   const date = getDate(dataWithDefaultDateType);
+        //   if (date) {
+        //     segments.push(<DateComponent date={date} locale={locale} />);
+        //   }
+        // }
+        if (fileData.dates.created) {
+          segments.push(
+            <span>
+              Created on <DateComponent date={fileData.dates.created!} locale={locale} />
+            </span>,
+          );
+          segments.push(<span>|</span>);
+        }
+
+        if (fileData.dates.modified) {
+          segments.push(
+            <span>
+              Updated on <DateComponent date={fileData.dates.modified!} locale={locale} />
+            </span>,
+          );
+          segments.push(<span>|</span>);
         }
       }
 
