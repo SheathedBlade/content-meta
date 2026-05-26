@@ -76,7 +76,12 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
       return (
         <p show-comma={options.showComma} class={classNames(displayClass, "content-meta")}>
-          {segments}
+          {segments.map((meta, idx) => (
+            <>
+              {meta}
+              {idx < segments.length - 1 ? <br /> : null}
+            </>
+          ))}
         </p>
       );
     } else {
