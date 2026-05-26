@@ -517,7 +517,7 @@ function classNames(...classes) {
 }
 
 // src/components/styles/contentMeta.scss
-var contentMeta_default = '.content-meta {\n  margin-top: 0;\n  color: var(--darkgray);\n}\n.content-meta[show-comma=true] > *:not(:last-child) {\n  margin-right: 8px;\n}\n.content-meta[show-comma=true] > *:not(:last-child)::after {\n  content: ",";\n}';
+var contentMeta_default = '.content-meta {\n  margin-top: 0;\n  color: var(--gray);\n}\n.content-meta[show-comma=true] > *:not(:last-child) {\n  margin-right: 8px;\n}\n.content-meta[show-comma=true] > *:not(:last-child)::after {\n  content: ",";\n}\n.content-meta {\n  display: flex;\n  justify-content: flex-start;\n  flex-wrap: wrap;\n  gap: 10;\n}';
 
 // src/components/ContentMeta.tsx
 var defaultOptions = {

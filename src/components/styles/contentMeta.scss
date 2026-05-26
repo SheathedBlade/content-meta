@@ -1,6 +1,6 @@
 .content-meta {
   margin-top: 0;
-  color: var(--darkgray);
+  color: var(--gray);
 
   &[show-comma="true"] {
     > *:not(:last-child) {
@@ -11,4 +11,9 @@
       }
     }
   }
+
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10;
 }
