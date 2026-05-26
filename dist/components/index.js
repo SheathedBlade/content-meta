@@ -162,11 +162,6 @@ var require_reading_time2 = __commonJS({
 // src/components/ContentMeta.tsx
 var import_reading_time = __toESM(require_reading_time2());
 
-// node_modules/@quartz-community/utils/dist/lang.js
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 // src/i18n/locales/en-US.ts
 var en_US_default = {
   components: {
@@ -487,17 +482,10 @@ function formatDate(d2, locale = "en-US") {
     day: "2-digit"
   });
 }
-
-// node_modules/@quartz-community/utils/dist/sort.js
-function getDate(data) {
-  const defaultDateType = data.defaultDateType;
-  if (!defaultDateType) {
-    return void 0;
-  }
-  const dates = data.dates;
-  return dates?.[defaultDateType];
-}
 var l;
+function S(n2) {
+  return n2.children;
+}
 l = { __e: function(n2, l2, u3, t2) {
   for (var i2, r2, o2; l2 = l2.__; ) if ((i2 = l2.__c) && !i2.__) try {
     if ((r2 = i2.constructor) && null != r2.getDerivedStateFromError && (i2.setState(r2.getDerivedStateFromError(n2)), o2 = i2.__d), null != i2.componentDidCatch && (i2.componentDidCatch(n2, t2 || {}), o2 = i2.__d), o2) return i2.__E = i2;
@@ -523,6 +511,11 @@ function DateComponent({ date, locale }) {
   return /* @__PURE__ */ u2("time", { datetime: date.toISOString(), children: formatDate(date, locale) });
 }
 
+// node_modules/@quartz-community/utils/dist/lang.js
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
 // src/components/styles/contentMeta.scss
 var contentMeta_default = '.content-meta {\n  margin-top: 0;\n  color: var(--darkgray);\n}\n.content-meta[show-comma=true] > *:not(:last-child) {\n  margin-right: 8px;\n}\n.content-meta[show-comma=true] > *:not(:last-child)::after {\n  content: ",";\n}';
 
@@ -539,16 +532,23 @@ var ContentMeta_default = ((opts) => {
       const segments = [];
       if (fileData.dates) {
         const locale = cfg.locale || "en-US";
-        const defaultDateType = fileData.defaultDateType ?? cfg.defaultDateType;
-        if (defaultDateType) {
-          const dataWithDefaultDateType = {
-            ...fileData,
-            defaultDateType
-          };
-          const date = getDate(dataWithDefaultDateType);
-          if (date) {
-            segments.push(/* @__PURE__ */ u2(DateComponent, { date, locale }));
-          }
+        if (fileData.dates.created) {
+          segments.push(
+            /* @__PURE__ */ u2("span", { children: [
+              "Created on ",
+              /* @__PURE__ */ u2(DateComponent, { date: fileData.dates.created, locale })
+            ] })
+          );
+          segments.push(/* @__PURE__ */ u2("span", { children: "|" }));
+        }
+        if (fileData.dates.modified) {
+          segments.push(
+            /* @__PURE__ */ u2("span", { children: [
+              "Updated on ",
+              /* @__PURE__ */ u2(DateComponent, { date: fileData.dates.modified, locale })
+            ] })
+          );
+          segments.push(/* @__PURE__ */ u2("span", { children: "|" }));
         }
       }
       if (options.showReadingTime) {
@@ -560,7 +560,10 @@ var ContentMeta_default = ((opts) => {
         });
         segments.push(/* @__PURE__ */ u2("span", { children: displayedTime }));
       }
-      return /* @__PURE__ */ u2("p", { "show-comma": options.showComma, class: classNames(displayClass, "content-meta"), children: segments });
+      return /* @__PURE__ */ u2("p", { "show-comma": options.showComma, class: classNames(displayClass, "content-meta"), children: segments.map((meta, idx) => /* @__PURE__ */ u2(S, { children: [
+        meta,
+        idx < segments.length - 1 ? /* @__PURE__ */ u2("br", {}) : null
+      ] })) });
     } else {
       return null;
     }
