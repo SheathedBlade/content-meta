@@ -1,6 +1,6 @@
 {
   "name": "@quartz-community/content-meta",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ContentMeta component for Quartz - displays date and reading time",
   "type": "module",
   "license": "MIT",
