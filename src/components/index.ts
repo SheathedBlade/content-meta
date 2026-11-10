@@ -1,2 +1,2 @@
+export type { ContentMetaItem, ContentMetaItemType, ContentMetaOptions } from "../options";
 export { default as ContentMeta } from "./ContentMeta";
-export type { ContentMetaOptions } from "./ContentMeta";

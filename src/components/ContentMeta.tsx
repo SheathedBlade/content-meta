@@ -1,92 +1,97 @@
 import type { QuartzComponentConstructor, QuartzComponentProps } from "@quartz-community/types";
-import type { JSX } from "preact";
+import { Fragment, type JSX } from "preact";
 import readingTime from "reading-time";
 import { i18n } from "../i18n";
+import type { ContentMetaItemType, ContentMetaOptions } from "../options";
+import { resolveOptions } from "../options";
 import { DateComponent } from "../util/date";
 import { classNames } from "../util/lang";
 import style from "./styles/contentMeta.scss";
 
-export interface ContentMetaOptions {
-  /**
-   * Whether to display reading time
-   */
-  showReadingTime: boolean;
-  showComma: boolean;
-}
+export type { ContentMetaOptions } from "../options";
 
-const defaultOptions: ContentMetaOptions = {
-  showReadingTime: true,
-  showComma: true,
-};
+const dateFields = {
+  created: "created",
+  modified: "modified",
+  published: "published",
+} as const;
+
+function isValidDate(value: unknown): value is Date {
+  return value instanceof Date && !Number.isNaN(value.getTime());
+}
 
 export default ((opts?: Partial<ContentMetaOptions>) => {
   // Merge options with defaults
-  const options: ContentMetaOptions = { ...defaultOptions, ...opts };
+  const options = resolveOptions(opts);
 
   function ContentMetadata({ cfg, fileData, displayClass }: QuartzComponentProps) {
     const text = fileData.text;
 
-    if (text) {
-      const segments: (string | JSX.Element)[] = [];
+    if (!text) return null;
 
-      if (fileData.dates) {
-        const locale = cfg.locale || "en-US";
-        // const defaultDateType =
-        //   (fileData.defaultDateType as ValidDateType | undefined) ??
-        //   (cfg.defaultDateType as ValidDateType | undefined);
-        // if (defaultDateType) {
-        //   const dataWithDefaultDateType: QuartzPluginData = {
-        //     ...(fileData as QuartzPluginData),
-        //     defaultDateType,
-        //   };
-        //   const date = getDate(dataWithDefaultDateType);
-        //   if (date) {
-        //     segments.push(<DateComponent date={date} locale={locale} />);
-        //   }
-        // }
-        if (fileData.dates.created) {
-          segments.push(
-            <span>
-              Created on <DateComponent date={fileData.dates.created!} locale={locale} />
-            </span>,
-          );
-          segments.push(<span>|</span>);
+    const locale = cfg.locale || "en-US";
+
+    function resolveDate(type: ContentMetaItemType): Date | undefined {
+      if (!fileData.dates) return undefined;
+
+      if (type === "defaultDate") {
+        const dateType = fileData.defaultDateType ?? cfg.defaultDateType;
+        if (dateType !== "created" && dateType !== "modified" && dateType !== "published") {
+          return undefined;
         }
 
-        if (fileData.dates.modified) {
-          segments.push(
-            <span>
-              Updated on <DateComponent date={fileData.dates.modified!} locale={locale} />
-            </span>,
-          );
-          segments.push(<span>|</span>);
-        }
+        const date = fileData.dates[dateType];
+        return isValidDate(date) ? date : undefined;
       }
 
-      // Display reading time if enabled
-      if (options.showReadingTime) {
-        const { minutes, words: _words } = readingTime(text as string);
-        const locale = cfg.locale || "en-US";
+      if (type === "readingTime") {
+        return undefined;
+      }
+
+      const date = fileData.dates[dateFields[type]];
+      return isValidDate(date) ? date : undefined;
+    }
+
+    function resolveValue(type: ContentMetaItemType): string | JSX.Element | undefined {
+      if (type === "readingTime") {
+        const { minutes } = readingTime(text as string);
         const i18nData = i18n(locale);
-        const displayedTime = i18nData.components.contentMeta.readingTime({
+        return i18nData.components.contentMeta.readingTime({
           minutes: Math.ceil(minutes),
         });
-        segments.push(<span>{displayedTime}</span>);
       }
 
-      return (
-        <p show-comma={options.showComma} class={classNames(displayClass, "content-meta")}>
-          {segments.map((meta, idx) => (
-            <>
-              {meta}
-              {idx < segments.length - 1 ? <br /> : null}
-            </>
-          ))}
-        </p>
-      );
-    } else {
-      return null;
+      const date = resolveDate(type);
+      if (!date) return undefined;
+
+      return <DateComponent date={date} locale={locale} />;
     }
+
+    const segments = options.items.flatMap((item, index) => {
+      const value = resolveValue(item.type);
+      if (value === undefined) return [];
+
+      return [
+        <span key={`${item.type}-${index}`} class={`content-meta-item content-meta-${item.type}`}>
+          {item.prefix ?? ""}
+          {value}
+          {item.suffix ?? ""}
+        </span>,
+      ];
+    });
+
+    if (segments.length === 0) return null;
+
+    return (
+      <p class={classNames(displayClass, "content-meta")}>
+        {segments.map((segment, index) => (
+          <Fragment key={segment.key}>
+            {index > 0 ? options.delimiter : null}
+            {segment}
+          </Fragment>
+        ))}
+      </p>
+    );
   }
 
   ContentMetadata.css = style;

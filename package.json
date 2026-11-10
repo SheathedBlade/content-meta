@@ -108,6 +108,14 @@
       },
       "showComma": {
         "type": "boolean"
+      },
+      "items": {
+        "type": "array",
+        "description": "Array of content meta items to display in order"
+      },
+      "delimiter": {
+        "type": "string",
+        "description": "Delimiter to use between content-meta items"
       }
     }
   },
