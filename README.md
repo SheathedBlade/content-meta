@@ -48,32 +48,32 @@ ExternalPlugin.ContentMeta({
 
 ## Configuration
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `items` | `ContentMetaItem[]` | `[{ type: "defaultDate" }, { type: "readingTime" }]` | Metadata items to display, in order. An empty array displays nothing. |
-| `delimiter` | `string` | `", "` | Text between metadata items. An empty string disables the delimiter. |
-| `showReadingTime` | `boolean` | `true` | Deprecated. Whether to display reading time when `items` is omitted. |
-| `showComma` | `boolean` | `true` | Deprecated. Whether to display a comma when `delimiter` is omitted. |
+| Option            | Type                | Default                                              | Description                                                           |
+| ----------------- | ------------------- | ---------------------------------------------------- | --------------------------------------------------------------------- |
+| `items`           | `ContentMetaItem[]` | `[{ type: "defaultDate" }, { type: "readingTime" }]` | Metadata items to display, in order. An empty array displays nothing. |
+| `delimiter`       | `string`            | `", "`                                               | Text between metadata items. An empty string disables the delimiter.  |
+| `showReadingTime` | `boolean`           | `true`                                               | Deprecated. Whether to display reading time when `items` is omitted.  |
+| `showComma`       | `boolean`           | `true`                                               | Deprecated. Whether to display a comma when `delimiter` is omitted.   |
 
 ### Metadata items
 
 Each item accepts the following options:
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `type` | `ContentMetaItemType` | Required | The metadata value to display. See the supported types below. |
-| `prefix` | `string` | `""` | Text before the value, including any desired spacing. |
-| `suffix` | `string` | `""` | Text after the value, including any desired spacing. |
+| Option   | Type                  | Default  | Description                                                   |
+| -------- | --------------------- | -------- | ------------------------------------------------------------- |
+| `type`   | `ContentMetaItemType` | Required | The metadata value to display. See the supported types below. |
+| `prefix` | `string`              | `""`     | Text before the value, including any desired spacing.         |
+| `suffix` | `string`              | `""`     | Text after the value, including any desired spacing.          |
 
 The following item types are supported:
 
-| Type | Description |
-| --- | --- |
+| Type          | Description                                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
 | `defaultDate` | The date selected by `defaultDateType`. The page's setting takes precedence over the global configuration. |
-| `created` | The creation date. |
-| `modified` | The modification date. |
-| `published` | The publication date. |
-| `readingTime` | The estimated reading time. |
+| `created`     | The creation date.                                                                                         |
+| `modified`    | The modification date.                                                                                     |
+| `published`   | The publication date.                                                                                      |
+| `readingTime` | The estimated reading time.                                                                                |
 
 Dates are provided by the CreatedModifiedDate plugin. Dates and reading time use the site's locale. Prefixes, suffixes, and delimiters are displayed as plain text and are not translated.
 
