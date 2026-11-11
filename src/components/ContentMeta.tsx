@@ -26,9 +26,6 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
   function ContentMetadata({ cfg, fileData, displayClass }: QuartzComponentProps) {
     const text = fileData.text;
-
-    if (!text) return null;
-
     const locale = cfg.locale || "en-US";
 
     function resolveDate(type: ContentMetaItemType): Date | undefined {
@@ -54,6 +51,7 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
 
     function resolveValue(type: ContentMetaItemType): string | JSX.Element | undefined {
       if (type === "readingTime") {
+        if (!text) return undefined;
         const { minutes } = readingTime(text as string);
         const i18nData = i18n(locale);
         return i18nData.components.contentMeta.readingTime({
