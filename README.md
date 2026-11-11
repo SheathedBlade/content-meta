@@ -1,8 +1,8 @@
 # @quartz-community/content-meta
 
-Displays content metadata below the article title: the page's date and the estimated reading time.
+Displays content metadata below the article title: the page's dates and the estimated reading time.
 
-The date shown is the one selected by the `defaultDateType` option of [created-modified-date](https://github.com/quartz-community/created-modified-date) (`modified` by default), so no date is shown when that plugin is disabled. Pages without text content show no metadata.
+By default, the plugin displays the date selected by the `defaultDateType` option of [created-modified-date](https://github.com/quartz-community/created-modified-date) (`modified` by default) and the estimated reading time. You can configure it to display created, modified, and published dates, and customize the text around and between metadata items. No dates are shown when the created-modified-date plugin is disabled. Pages without text content show no metadata.
 
 ## Installation
 
