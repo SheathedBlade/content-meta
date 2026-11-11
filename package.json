@@ -1,6 +1,6 @@
 {
   "name": "@quartz-community/content-meta",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "ContentMeta component for Quartz - displays date and reading time",
   "type": "module",
   "license": "MIT",
@@ -47,7 +47,8 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run format && npm run test",
     "prepublishOnly": "npm run build",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts --no-audit --no-fund"
   },
   "peerDependencies": {
     "preact": "^10.0.0"
